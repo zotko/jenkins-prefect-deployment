@@ -1,4 +1,4 @@
-# jenkins-prefect-deployment
+# Deploy Prefect Using Jenkins
 
 ## Description
 
@@ -6,13 +6,19 @@ This repository provides a template for deploying Prefect flows using Jenkins an
 
 ## Usage
 
+1. **Install Cookiecutter**:
+    ```bash
+    pip install cookiecutter
+    ```
+
+2. **Generate the Project Template**:
     ```bash
     cookiecutter https://github.com/zotko/jenkins-prefect-deployment.git
     ```
-Follow the prompts to customize your project:
-- `project_name`: Name of your project.
-- `flow_name`: Name of your Prefect flow.
-- `pool_name`: Name of your Prefect work pool.
+    Follow the prompts to customize your project:
+    - `project_name`: Name of your project.
+    - `flow_name`: Name of your Prefect flow.
+    - `pool_name`: Name of your Prefect work pool.
 
 
 ## License
