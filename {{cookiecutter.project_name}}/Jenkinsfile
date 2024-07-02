@@ -1,0 +1,48 @@
+def imageName = '{{cookiecutter.flow_name}}'
+def imageTag = 'latest'
+
+def registryURL = 'your-registry-url'
+def registryCredsID = 'your-registry-credentials-id'
+def prefectAPIURL = 'your-prefect-api-url'
+
+pipeline {
+    agent {
+        docker {
+            image 'docker:dind'
+        }
+    }
+    parameters {
+        string(name: 'ImageName', defaultValue: imageName, description: 'Name of the image to build and push')
+        string(name: 'ImageTag', defaultValue: imageTag, description: 'Tag of the image to build and push')
+        string(name: 'prefectAPIURL', defaultValue: prefectAPIURL, description: 'URL of the Prefect API')
+    }
+    stages {
+        stage('Build Image') {
+            steps {
+                script {
+                    docker.build("${registryURL}/${ImageName}:${ImageTag}")
+                }
+            }
+        }
+        stage('Deploy to Prefect') {
+            steps {
+                script {
+                    docker.image("${registryURL}/${ImageName}:${ImageTag}")
+                    .run("-e PREFECT_API_URL=${prefectAPIURL} " +
+                         "-e REGISTRY_URL=${registryURL} " +
+                         "-e IMAGE_NAME=${ImageName} " +
+                         "-e IMAGE_TAG=${ImageTag}")
+                }
+            }
+        }
+        stage('Push Image to Registry') {
+            steps {
+                script {
+                    docker.withRegistry("https://${registryURL}", registryCredsID) {
+                        docker.image("${registryURL}/${ImageName}:${ImageTag}").push()
+                    }
+                }
+            }
+        }
+    }
+}

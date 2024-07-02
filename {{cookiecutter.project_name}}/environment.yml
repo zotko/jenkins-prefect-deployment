@@ -1,0 +1,12 @@
+name: prefect-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - prefect==2.19.7
+  
+  # Uncomment the following section to install pip packages
+  # - pip
+  # - pip:
+  #   - example-package==0.0.1
