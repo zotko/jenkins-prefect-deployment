@@ -1,4 +1,4 @@
-FROM prefecthq/prefect:2.19.4-python3.12-conda
+FROM prefecthq/prefect:2.19.7-python3.12-conda
 
 # Add environment file to the image
 COPY environment.yml .
